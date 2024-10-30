@@ -23,21 +23,18 @@ export default class SortableTable {
     return div.firstElementChild;
   }
 
-  createHeaderTemplate() {
-    return `
-    <div data-element="header" class="sortable-table__header sortable-table__row">
-      ${this.headerConfig.map(cellData => {
-    const { id, title, sortable } = cellData;
+  createHeaderListTemplate() {
+    return (this.headerConfig.map(cellData => {
+      const { id, title, sortable } = cellData;
 
-    return `
+      return `
           <div class="sortable-table__cell" data-id="${id}" data-sortable="${sortable}" data-order="${sortable && id === this.sortField ? this.sortFunction : ''}">
             <span>${title}</span>
             ${this.createArrowElementTemplate()}
             
           </div>
         `;
-  }).join('')}
-    </div>`;
+    }).join(''));
   }
 
   createArrowElementTemplate() {
@@ -84,7 +81,9 @@ export default class SortableTable {
   createTemplate() {
     const template = `
     <div class="sortable-table">
-      ${this.createHeaderTemplate()}
+      <div data-element="header" class="sortable-table__header sortable-table__row">
+        ${this.createHeaderListTemplate()}
+      </div>
       <div data-element="body" class="sortable-table__body">
         ${this.createDataListTemplate()}
       </div>
@@ -100,7 +99,7 @@ export default class SortableTable {
   }
 
   updateHeader() {
-    this.subElements.header.outerHTML = this.createHeaderTemplate();
+    this.subElements.header.innerHTML = this.createHeaderListTemplate();
   }
 
   updateTableData() {
